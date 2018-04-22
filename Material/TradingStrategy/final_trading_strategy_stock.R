@@ -1,14 +1,14 @@
 
 #we will need severalpackages so let's install and import these
-install.packages("quantmod")
+#install.packages("quantmod")
 library(quantmod)
-install.packages("timeSeries")
+#install.packages("timeSeries")
 library(timeSeries)
 install.packages("rugarch")
 library(rugarch)
 
 #we can read the .csv file containing all the S&P500 related information
-gspc <- read.csv(file="C:\\Users\\User\\Desktop\\SP500.csv", header = T)
+gspc <- read.csv(file="C:\\Users\\vinic\\Documents\\GitHub\\Quantitative Finance & Algorithmic Trading II - Time Series\\Material\\Data\\SP500.csv", header = T)
 dates <- as.Date(as.character(gspc[, 1],format="%d/%m/%Y"))
 #log returns ... there are several values: open price / high price / low price / closing price / adjusted closing price(this is what we use)
 returns <- diff(log(gspc$Adj.Close))
@@ -31,7 +31,7 @@ for (i in 0:forecasts.length) {
   final.order <- c(0,0,0)
   
   #ARMA model order p,q < 4 !!!
-  for (p in 1:4) for (q in 1:4) { 
+  for (p in 1:3) for (q in 1:3) { 
     
     #because of the error=function(err) FALSE in case of an error it return FALSE
     model <- tryCatch( arima(roll.returns, order = c(p,0,q)), error = function( err ) FALSE, warning = function( err ) FALSE )
@@ -106,3 +106,4 @@ lines(x = both.curves[,"Long Term Investing Returns"], col = "red")
 strategy_colors <- c( "green", "red") 
 legend(x = 'bottomleft', legend = c("ARIMA&GARCH", "Long Term Investing"),
        lty = 1, col = strategy_colors)
+

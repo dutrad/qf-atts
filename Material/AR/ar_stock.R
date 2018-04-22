@@ -1,5 +1,5 @@
 #if you do not have already installed you have to do so
-install.packages("quantmod")
+#install.packages("quantmod")
 
 #this is how we can fetch finance related date from the web
 require(quantmod)
