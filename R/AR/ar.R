@@ -14,7 +14,16 @@ acf(x)
 
 #let's try to use AR(2) to figure out the coefficients
 #we use Maximum Likelihood Estimator to find out the coefficients
-x.ar <- ar(x,method="mle")
+x.ar <- ar(x, method = 'mle')
+
+#print out the order of AR (it should be 2 of course)
+x.ar$order
+
+#print out the coefficients we calculate with MLE
+x.ar$ar
+
+#Yule-Walker
+x.ar <- ar(x)
 
 #print out the order of AR (it should be 2 of course)
 x.ar$order
