@@ -1,10 +1,6 @@
-#if you do not have already installed you have to do so
-#install.packages("quantmod")
+getwd()
 
-#this is how we can fetch finance related date from the web
-require(quantmod)
-
-PETR <- read.csv(file="C:\\Users\\vinic\\Documents\\GitHub\\Quantitative Finance & Algorithmic Trading II - Time Series\\Data\\PETR4.SA.csv", header=TRUE, sep=",")
+PETR <- read.csv(file="..\\Data\\PETR4.SA.csv", header=TRUE, sep=",")
 
 adClose <- PETR$Adj.Close
 

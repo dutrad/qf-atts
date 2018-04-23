@@ -1,11 +1,13 @@
-#PETR4
-PETR <- read.csv(file="C:\\Users\\vinic\\Documents\\GitHub\\Quantitative Finance & Algorithmic Trading II - Time Series\\Data\\PETR4.SA.csv", header=TRUE, sep=",")
+require("quantmod")
 
-adClose <- PETR$Adj.Close
+#Get stock info
+getSymbols("AAPL", src='yahoo')
+
+pClose <- Ad(AAPL)
 
 #we want to plot the adjusted closing prices
-plot(adClose, type = 'l')
+plot(pClose, type = 'l')
 
-acf(adClose)
+acf(pClose)
 
-acf(diff(adClose),na.action=na.omit)
+acf(diff(pClose),na.action=na.omit)

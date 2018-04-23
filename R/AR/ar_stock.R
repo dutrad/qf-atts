@@ -1,42 +1,33 @@
-#if you do not have already installed you have to do so
-#install.packages("quantmod")
+require("quantmod")
 
-#this is how we can fetch finance related date from the web
-require(quantmod)
+#Get stock info
+getSymbols("AAPL", src='yahoo')
 
-#we download AAPL stock prices from Yahoo Finance
-getSymbols("AAPL",src="yahoo")
+pClose <- Ad(AAPL)
 
 #we want to plot the adjusted closing prices
-plot(Ad(AAPL))
+plot(pClose, type = 'l')
 
 #log daily returns of AAPL stock (for adjusted closing price)
-aaplreturn = diff(log(Ad(AAPL)))
+pReturn = diff(log(pClose))
 
 #plot the returns
-plot(aaplreturn)
+plot(pReturn)
 
 #autocorrelation function plot
-acf(aaplreturn,na.action=na.omit)
+acf(pReturn,na.action=na.omit)
 
 #use autoregressive model to approximate the coefficients
-aaplreturn.ar <- ar(aaplreturn,na.action=na.omit)
+pReturn.ar <- ar(pReturn, na.action = na.omit)
 #the order of AR(p) model (so the value of p)
-aaplreturn.ar$order
+pReturn.ar$order
 #the coefficients: as many as the value of p
-aaplreturn.ar$ar
+pReturn.ar$ar
 #calculate the variance for the coefficients to be able to calculate the error
-aaplreturn.ar$asy.var
+pReturn.ar$asy.var
 
-#we can caclculate standard error and confidence intervals for the parameters
-#sqrt() to end up with the standard error
-#we can construct 95% confidence intervals for each parameter
-#the value of 1.96 is based on the fact that 95% of the area of a normal 
-#distribution is within 1.96 standard deviations of the mean
-0.004535038+c(-1.96,1.96)*sqrt(3.644595e-04)
--0.035878800+c(-1.96,1.96)*sqrt(3.644595e-04)
-0.002494075+c(-1.96,1.96)*sqrt(3.644595e-04)
-0.053281380+c(-1.96,1.96)*sqrt(3.644595e-04)
+0.036541+c(-1.96,1.96)*sqrt(3.647e-04)
+0.027684+c(-1.96,1.96)*sqrt(3.649e-04)
+-0.06132+c(-1.96,1.96)*sqrt(3.647e-04)
 
-#the first parameter is out of the confidence interval so this model is not able to grasp the serial correlation NOT A GOOD MODEL!
-#AR(4) is certainly not the underlying model 
+acf(pReturn.ar$resid, na.action = na.omit)
