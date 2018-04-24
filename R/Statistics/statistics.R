@@ -1,5 +1,3 @@
-getwd()
-
 PETR <- read.csv(file="..\\Data\\PETR4.SA.csv", header=TRUE, sep=",")
 
 adClose <- PETR$Adj.Close

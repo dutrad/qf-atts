@@ -37,3 +37,16 @@ end
 figure
 plot(aic)
 title('AIC para modelos de ordem 1 até 50')
+
+%%
+phi = [ret(2:end-1) ret(1:end-2)];
+sys_hat = phi\ret(3:end);
+
+%Simulation
+ret_hat = zeros(length(ret));
+for k = 3:length(ret)
+    ret_hat(k) = sys_hat'*[ret(k-1); ret(k-2)];
+end
+
+figure
+plot(ret-ret_hat)
