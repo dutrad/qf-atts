@@ -1,3 +1,5 @@
+rm(list=ls())
+
 #this is how we can fetch finance related date from the web
 require(quantmod)
 
@@ -22,11 +24,11 @@ for(i in 1:4) for(j in 1:4) {
   if( actual$aic < solution.aic){
     solution.aic <- actual$aic
     solution.order <- c(i,0,j)
-    solution.arma <- arima(returns,order=solution.order,optim.control=list(maxit = 1000))
+    solution.arma <- actual
   }
 }
 
-#fitted ARMA(3,3) model p and q values 
+#fitted model
 solution.order
 
 #autocorrelation plot

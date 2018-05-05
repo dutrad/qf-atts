@@ -1,3 +1,4 @@
+rm(list=ls())
 
 set.seed(3)
 
@@ -14,12 +15,12 @@ solution.order <- c(0,0,0)
 #and choose the best according to the AIC
 for(i in 1:4) for(j in 1:4) { 
   
-  actual.aic <- AIC(arima(x,order=c(i,0,j),optim.control=list(maxit = 1000)))
+  actual <- arima(x,order=c(i,0,j),optim.control=list(maxit = 1000))
   
-  if( actual.aic < solution.aic){
-    solution.aic <- actual.aic
+  if( actual$aic < solution.aic){
+    solution.aic <- actual$aic
     solution.order <- c(i,0,j)
-    solution.arma <- arima(x,order=solution.order,optim.control=list(maxit = 1000))
+    solution.arma <- actual
   }
 }
 
