@@ -6,16 +6,13 @@ require(quantmod)
 require(forecast)
 
 #we download IBM stock prices from Yahoo Finance
-getSymbols("IBM",src="yahoo")
-
-stock <- read.csv(file="..\\Data\\SP500.csv", header=TRUE, sep=",")
+getSymbols("PETR4.SA",src="yahoo")
 
 #log daily returns
-#returns <- diff(log(Ad(IBM)))
-returns <- diff(log(stock$Adj.Close))
+returns <- diff(log(Ad(PETR4.SA)))
 head(returns)
 
-#returns <- returns[-1]
+returns <- returns[-1]
 
 #let's find the optimal p,d,q values with AIC 
 result.aic <- Inf
@@ -41,7 +38,7 @@ acf(resid(result.arima),na.action=na.omit)
 Box.test(resid(result.arima),lag=25,type="Ljung-Box")
 
 #let's forecast the log daily returns in the coming 50 days!!!
-plot(forecast(result.arima,h=10))
+plot(forecast(result.arima,h=50))
 
 result.arima$coef
 confint(result.arima)

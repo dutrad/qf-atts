@@ -7,13 +7,13 @@ require(quantmod)
 require("tseries")
 
 #we download S&P500 prices from Yahoo Finance
-#data <- getSymbols("SP500",src="FRED", from="1990-01-01")
-
-data <- read.csv(file="..\\Data\\SP500.csv", header=TRUE, sep=",")
+getSymbols("MRVE3.SA",src="yahoo", from="1990-01-01")
+head(MRVE3.SA)
+#data <- read.csv(file="..\\Data\\SP500.csv", header=TRUE, sep=",")
 
 #log daily returns
-#returns <- diff(log(Ad(IBM)))
-returns <- diff(log(data$Adj.Close))
+returns <- diff(log(Ad(MRVE3.SA)))
+#returns <- diff(log(data$Adj.Close))
 
 #log daily returns
 #returns <- diff(log((SP500)))
@@ -61,4 +61,9 @@ acf(result.residuals)
 #heteroskedasticity 
 acf(result.residuals^2)
 
+#check Ljung-Box p-value
+Box.test(resid(result.arima),lag=25,type="Ljung-Box")
+
 result.garch$order
+result.garch$coef
+confint(result.garch)

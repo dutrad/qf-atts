@@ -1,14 +1,11 @@
+rm(list = ls())
 
-#we will need severalpackages so let's install and import these
-#install.packages("quantmod")
 library(quantmod)
-#install.packages("timeSeries")
 library(timeSeries)
-install.packages("rugarch")
 library(rugarch)
 
 #we can read the .csv file containing all the S&P500 related information
-gspc <- read.csv(file="C:\\Users\\vinic\\Documents\\GitHub\\Quantitative Finance & Algorithmic Trading II - Time Series\\Material\\Data\\SP500.csv", header = T)
+gspc <- read.csv(file="..\\Data\\PETR4.SA.csv", header = T)
 dates <- as.Date(as.character(gspc[, 1],format="%d/%m/%Y"))
 #log returns ... there are several values: open price / high price / low price / closing price / adjusted closing price(this is what we use)
 returns <- diff(log(gspc$Adj.Close))
@@ -16,7 +13,7 @@ returns <- diff(log(gspc$Adj.Close))
 #we will use 500 observations (window) to fit the ARMA and GARCH models
 #we shift the window one step and fit the models again
 #SLOW PROCEDURE !!!
-window.length <- 500
+window.length <- 50
 forecasts.length <- length(returns) - window.length
 forecasts <- vector(mode="numeric", length=forecasts.length) 
 #we need this feature: +1 for positive return -1 for negative return
@@ -43,7 +40,7 @@ for (i in 0:forecasts.length) {
       if (current.aic < final.aic) {
         final.aic <- current.aic
         final.order <- c(p,0,q)
-        final.arima <- arima(roll.returns, order = final.order)
+        final.arima <- model
       }
     }
   }

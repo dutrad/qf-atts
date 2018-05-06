@@ -1,14 +1,12 @@
+rm(list=ls())
 
 #we will need severalpackages so let's install and import these
-install.packages("quantmod")
 library(quantmod)
-install.packages("timeSeries")
 library(timeSeries)
-install.packages("rugarch")
 library(rugarch)
 
 #we can read the .csv file containing all the EUR/USD related information
-eurusd <- read.csv(file="C:\\Users\\User\\Desktop\\TimeSeries\\sourcecode\\TradingStrategy\\EURUSD.csv", header = T)
+eurusd <- read.csv(file="..\\Data\\EURUSD.csv", header = T)
 dates <- as.Date(as.character(eurusd[, 1]), format="%d/%m/%Y")
 #log returns ... there are several values: open price / high price / low price / closing price (this is what we use)
 returns <- diff(log(eurusd$C))
@@ -16,7 +14,7 @@ returns <- diff(log(eurusd$C))
 #we will use 500 observations (window) to fit the ARMA and GARCH models
 #we shift the window one step and fit the models again
 #SLOW PROCEDURE !!!
-window.length <- 100
+window.length <- 500
 forecasts.length <- length(returns) - window.length
 forecasts <- vector(mode="numeric", length=forecasts.length) 
 #we need this feature: +1 for positive return -1 for negative return
@@ -43,7 +41,7 @@ for (i in 0:forecasts.length) {
       if (current.aic < final.aic) {
         final.aic <- current.aic
         final.order <- c(p,0,q)
-        final.arima <- arima(roll.returns, order = final.order)
+        final.arima <- model
       }
     }
   }
@@ -79,6 +77,7 @@ forecasts
 #we use the first window.length data to fit the model ... we need the date for the forecasted values
 forecasts.ts <- xts(forecasts, dates[(window.length):length(returns)])
 forecasts.ts
+
 # create lagged series (shift one step to the right) of forecasts and sign of forecast
 strategy.forecasts <- Lag(forecasts.ts, 1)
 strategy.forecasts
