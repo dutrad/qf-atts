@@ -8,7 +8,7 @@ require(forecast)
 #we download IBM stock prices from Yahoo Finance
 getSymbols("IBM",src="yahoo")
 
-stock <- read.csv(file="..\\Data\\GGBR4.SA.csv", header=TRUE, sep=",")
+stock <- read.csv(file="..\\Data\\SP500.csv", header=TRUE, sep=",")
 
 #log daily returns
 #returns <- diff(log(Ad(IBM)))
@@ -42,3 +42,6 @@ Box.test(resid(result.arima),lag=25,type="Ljung-Box")
 
 #let's forecast the log daily returns in the coming 50 days!!!
 plot(forecast(result.arima,h=10))
+
+result.arima$coef
+confint(result.arima)

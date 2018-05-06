@@ -1,17 +1,22 @@
-#if you do not have already installed you have to do so
-install.packages("quantmod")
+rm(list=ls())
+
 #this is how we can fetch finance related date from the web
 require(quantmod)
 
 #package needed for GARCH model
-install.packages("tseries")
 require("tseries")
 
 #we download S&P500 prices from Yahoo Finance
-data <- getSymbols("SP500",src="FRED", from="1990-01-01")
+#data <- getSymbols("SP500",src="FRED", from="1990-01-01")
+
+data <- read.csv(file="..\\Data\\SP500.csv", header=TRUE, sep=",")
 
 #log daily returns
-returns <- diff(log((SP500)))
+#returns <- diff(log(Ad(IBM)))
+returns <- diff(log(data$Adj.Close))
+
+#log daily returns
+#returns <- diff(log((SP500)))
 
 #we are courious about the returns aclusively (not dates included)
 returns <- as.numeric(returns)
@@ -23,11 +28,12 @@ result.aic <- Inf
 result.order <- c(0,0,0)
 
 for(p in 1:4) for(d in 0:1) for(q in 1:4){
-  actual.aic <- AIC(arima(returns, order=c(p, d, q),optim.control=list(maxit = 1000))) 
-  if (actual.aic < result.aic) { 
-    result.aic <- actual.aic 
+  actual <- arima(returns, order=c(p, d, q),optim.control=list(maxit = 1000)) 
+  
+  if (actual$aic < result.aic) { 
+    result.aic <- actual$aic 
     result.order <- c(p, d, q) 
-    result.arima <- arima(returns, order=result.order,optim.control=list(maxit = 1000)) 
+    result.arima <- actual 
   } 
 }
 
@@ -54,3 +60,5 @@ acf(result.residuals)
 #squared residuals autocorrelation is like white noise: we can explain 
 #heteroskedasticity 
 acf(result.residuals^2)
+
+result.garch$order
